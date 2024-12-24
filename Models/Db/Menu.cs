@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Shop_web.models.db;
+namespace Shop_web.Models.Db;
 
 public partial class Menu
 {
