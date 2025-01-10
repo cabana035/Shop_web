@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Shop_web.Models;
+using Shop_web.Models.Db;
 using System.Diagnostics;
 
 namespace Shop_web.Controllers
@@ -7,14 +8,18 @@ namespace Shop_web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly OnlineShopContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger , OnlineShopContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
+            var banner=_context.Banners.ToList();
+            ViewData["banners"]=banner;
             return View();
         }
 

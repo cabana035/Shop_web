@@ -118,7 +118,7 @@ namespace Shop_web.Areas.Admin.Controllers
                     if (ImageFile != null)
                     {
                         string org_fn;
-                        org_fn=Directory.GetCurrentDirectory() + "/wwwroot/images/banners" + banner.ImageName ;
+                        org_fn=Directory.GetCurrentDirectory() + "/wwwroot/images/banners/" + banner.ImageName ;
                         if (System.IO.File.Exists(org_fn))
                         {
                             System.IO.File.Delete(org_fn);
@@ -183,7 +183,8 @@ namespace Shop_web.Areas.Admin.Controllers
             {
                 //========================delete image
                 string org_fn;
-                org_fn = Directory.GetCurrentDirectory() + "/wwwroot/images/banners" + banner.ImageName;
+                org_fn = Directory.GetCurrentDirectory() + @"\wwwroot\images\banners\" + banner.ImageName;
+               
                 if (System.IO.File.Exists(org_fn))
                 {
                     System.IO.File.Delete(org_fn);
