@@ -1,61 +1,42 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var banners = ViewData["banners"] as List<Shop_web.Models.Db.Banner>;
 }
 
 
 <!--slider area start-->
 <section class="slider_section mb-63">
     <div class="slider_area slick_slider_activation" data-slick='{
-            "slidesToShow": 1,
-            "slidesToScroll": 1,
-            "arrows": true,
-            "dots": true,
-            "autoplay": false,
-            "speed": 300,
-            "infinite": true
-        }'>
-        <div class="single_slider d-flex align-items-center" data-bgimg="assets/img/slider/slider1.jpg">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-7">
-                        <div class="slider_text">
-                            <span>Lookbook</span>
-                            <h1>fashion trend for autum girls with vibes</h1>
-                            <p>We love seeing how our Aslam wearers like <br> to wear their Norda</p>
-                            <a class="btn btn-primary" href="shop.html">Explore Now</a>
+    "slidesToShow": 1,
+    "slidesToScroll": 1,
+    "arrows": true,
+    "dots": true,
+    "autoplay": false,
+    "speed": 300,
+    "infinite": true
+    }'>
+        @if (banners != null)
+        {
+            var slider = banners.Where(b => b.Position == "Slider").OrderBy(o => o.Priority).ToList();
+            foreach(var item in slider)
+            {
+                <div class="single_slider d-flex align-items-center" data-bgimg="/images/banners/@item.ImageName">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-7">
+                                <div class="slider_text">
+                                    <span>Lookbook</span>
+                                    <h1>@item.Title</h1>
+                                    <p>@item.Subtile</p>
+                                    <a class="btn btn-primary" href=@item.Link>Explore Now</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="single_slider d-flex align-items-center" data-bgimg="assets/img/slider/slider1.jpg">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-7">
-                        <div class="slider_text">
-                            <span>Lookbook</span>
-                            <h1>fashion trend for autum girls with vibes</h1>
-                            <p>We love seeing how our Aslam wearers like <br> to wear their Norda</p>
-                            <a class="btn btn-primary" href="shop.html">Explore Now</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="single_slider d-flex align-items-center" data-bgimg="assets/img/slider/slider1.jpg">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-7">
-                        <div class="slider_text">
-                            <span>Lookbook</span>
-                            <h1>fashion trend for autum girls with vibes</h1>
-                            <p>We love seeing how our Aslam wearers like <br> to wear their Norda</p>
-                            <a class="btn btn-primary" href="shop.html">Explore Now</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+            }
+        }
+
     </div>
 </section>
 <!--slider area end-->
@@ -114,21 +95,24 @@
             <h2>featured collections</h2>
         </div>
         <div class="banner_container d-flex">
-            <figure class="single_banner position-relative mr-30">
-                <img src="assets/img/bg/bg1.jpg" alt="">
-                <figcaption class="banner_text position-absolute">
-                    <h3>Zara Pattern <br> backpacks</h3>
-                    <p>Stretch, fresh-cool help you alway <br> comfortable</p>
-                    <a class="btn btn-primary" href="shop.html">Shop Now</a>
-                </figcaption>
-            </figure>
-            <figure class="single_banner position-relative">
-                <img src="assets/img/bg/bg2.jpg" alt="">
-                <figcaption class="banner_text position-absolute">
-                    <h3 class="text-white">Basic Color Caps</h3>
-                    <p class="text-white">Minimalist never cool, choose and make <br> the simple great again!</p>
-                </figcaption>
-            </figure>
+            @if(banners!=null)
+            {
+                var banner_list = banners.Where(x => x.Position == "Banner1").OrderBy(p => p.Priority).ToList();
+                foreach (var item in banner_list)
+                {
+                    <figure class="single_banner position-relative mr-30">
+                        <img src="/images/banners/@item.ImageName" alt="">
+                        <figcaption class="banner_text position-absolute">
+                            <h3>@item.Title</h3>
+                            <p>@item.Subtile</p>
+                            @if (!string.IsNullOrEmpty(@item.Link))
+                            {
+                                <a class="btn btn-primary" href=@item.Link>Shop Now</a>
+                            }
+                        </figcaption>
+                    </figure>
+                }
+            }
         </div>
     </div>
 </section>
@@ -144,13 +128,13 @@
                 <ul class="nav" role="tablist">
                     <li>
                         <a class="active" data-toggle="tab" href="#all" role="tab" aria-controls="all"
-                           aria-selected="true">
+                        aria-selected="true">
                             All
                         </a>
                     </li>
                     <li>
                         <a data-toggle="tab" href="#clothings" role="tab" aria-controls="clothings"
-                           aria-selected="false">
+                        aria-selected="false">
                             Clothings
                         </a>
                     </li>
@@ -166,7 +150,7 @@
                     </li>
                     <li>
                         <a data-toggle="tab" href="#accessories" role="tab" aria-controls="accessories"
-                           aria-selected="false">
+                        aria-selected="false">
                             Accessories
                         </a>
                     </li>
@@ -180,49 +164,49 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="all" role="tabpanel">
                     <div class="product_slick slick_slider_activation" data-slick='{
-                            "slidesToShow": 4,
-                            "slidesToScroll": 1,
-                            "arrows": true,
-                            "dots": false,
-                            "autoplay": false,
-                            "speed": 300,
-                            "infinite": true,
-                            "responsive":[
-                              {"breakpoint":992, "settings": { "slidesToShow": 3 } },
-                              {"breakpoint":768, "settings": { "slidesToShow": 2 } },
-                              {"breakpoint":300, "settings": { "slidesToShow": 1 } }
-                             ]
-                        }'>
+                    "slidesToShow": 4,
+                    "slidesToScroll": 1,
+                    "arrows": true,
+                    "dots": false,
+                    "autoplay": false,
+                    "speed": 300,
+                    "infinite": true,
+                    "responsive":[
+                    {"breakpoint":992, "settings": { "slidesToShow": 3 } },
+                    {"breakpoint":768, "settings": { "slidesToShow": 2 } },
+                    {"breakpoint":300, "settings": { "slidesToShow": 1 } }
+                    ]
+                    }'>
                         <article class="col single_product">
                             <figure>
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product1.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -249,8 +233,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -260,31 +244,31 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product2.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -317,8 +301,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -328,30 +312,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product3.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -384,8 +368,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -395,30 +379,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product4.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -447,8 +431,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -458,30 +442,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product1.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -508,8 +492,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -519,30 +503,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product2.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -575,8 +559,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -585,48 +569,48 @@
                 </div>
                 <div class="tab-pane fade" id="clothings" role="tabpanel">
                     <div class="product_slick slick_slider_activation" data-slick='{
-                            "slidesToShow": 4,
-                            "slidesToScroll": 1,
-                            "arrows": true,
-                            "dots": false,
-                            "autoplay": false,
-                            "speed": 300,
-                            "infinite": true,
-                            "responsive":[
-                              {"breakpoint":992, "settings": { "slidesToShow": 3 } },
-                              {"breakpoint":768, "settings": { "slidesToShow": 2 } },
-                              {"breakpoint":300, "settings": { "slidesToShow": 1 } }
-                             ]
-                        }'>
+                    "slidesToShow": 4,
+                    "slidesToScroll": 1,
+                    "arrows": true,
+                    "dots": false,
+                    "autoplay": false,
+                    "speed": 300,
+                    "infinite": true,
+                    "responsive":[
+                    {"breakpoint":992, "settings": { "slidesToShow": 3 } },
+                    {"breakpoint":768, "settings": { "slidesToShow": 2 } },
+                    {"breakpoint":300, "settings": { "slidesToShow": 1 } }
+                    ]
+                    }'>
                         <article class="col single_product">
                             <figure>
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product3.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -659,8 +643,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -670,30 +654,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product4.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -722,8 +706,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -733,30 +717,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product1.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -783,8 +767,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -794,30 +778,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product2.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -850,8 +834,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -861,30 +845,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product1.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -920,30 +904,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product2.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -976,8 +960,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -989,48 +973,48 @@
                 </div>
                 <div class="tab-pane fade" id="bags" role="tabpanel">
                     <div class="product_slick slick_slider_activation" data-slick='{
-                            "slidesToShow": 4,
-                            "slidesToScroll": 1,
-                            "arrows": true,
-                            "dots": false,
-                            "autoplay": false,
-                            "speed": 300,
-                            "infinite": true ,
-                            "responsive":[
-                              {"breakpoint":992, "settings": { "slidesToShow": 3 } },
-                              {"breakpoint":768, "settings": { "slidesToShow": 2 } },
-                              {"breakpoint":300, "settings": { "slidesToShow": 1 } }
-                             ]
-                        }'>
+                    "slidesToShow": 4,
+                    "slidesToScroll": 1,
+                    "arrows": true,
+                    "dots": false,
+                    "autoplay": false,
+                    "speed": 300,
+                    "infinite": true ,
+                    "responsive":[
+                    {"breakpoint":992, "settings": { "slidesToShow": 3 } },
+                    {"breakpoint":768, "settings": { "slidesToShow": 2 } },
+                    {"breakpoint":300, "settings": { "slidesToShow": 1 } }
+                    ]
+                    }'>
                         <article class="col single_product">
                             <figure>
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product3.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1063,8 +1047,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -1074,30 +1058,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product4.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1126,8 +1110,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -1137,30 +1121,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product1.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1196,30 +1180,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product2.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1252,8 +1236,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -1264,30 +1248,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product1.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1314,8 +1298,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -1325,30 +1309,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product2.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1381,8 +1365,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -1391,48 +1375,48 @@
                 </div>
                 <div class="tab-pane fade" id="shoes" role="tabpanel">
                     <div class="product_slick slick_slider_activation" data-slick='{
-                            "slidesToShow": 4,
-                            "slidesToScroll": 1,
-                            "arrows": true,
-                            "dots": false,
-                            "autoplay": false,
-                            "speed": 300,
-                            "infinite": true ,
-                            "responsive":[
-                              {"breakpoint":992, "settings": { "slidesToShow": 3 } },
-                              {"breakpoint":768, "settings": { "slidesToShow": 2 } },
-                              {"breakpoint":300, "settings": { "slidesToShow": 1 } }
-                             ]
-                        }'>
+                    "slidesToShow": 4,
+                    "slidesToScroll": 1,
+                    "arrows": true,
+                    "dots": false,
+                    "autoplay": false,
+                    "speed": 300,
+                    "infinite": true ,
+                    "responsive":[
+                    {"breakpoint":992, "settings": { "slidesToShow": 3 } },
+                    {"breakpoint":768, "settings": { "slidesToShow": 2 } },
+                    {"breakpoint":300, "settings": { "slidesToShow": 1 } }
+                    ]
+                    }'>
                         <article class="col single_product">
                             <figure>
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product2.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1465,8 +1449,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -1477,30 +1461,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product1.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1527,8 +1511,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -1538,30 +1522,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product2.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1594,8 +1578,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -1605,30 +1589,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product3.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1661,8 +1645,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -1672,30 +1656,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product4.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1724,8 +1708,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -1735,30 +1719,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product1.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1794,49 +1778,49 @@
                 </div>
                 <div class="tab-pane fade" id="accessories" role="tabpanel">
                     <div class="product_slick slick_slider_activation" data-slick='{
-                            "slidesToShow": 4,
-                            "slidesToScroll": 1,
-                            "arrows": true,
-                            "dots": false,
-                            "autoplay": false,
-                            "speed": 300,
-                            "infinite": true ,
-                            "responsive":[
-                              {"breakpoint":992, "settings": { "slidesToShow": 3 } },
-                              {"breakpoint":768, "settings": { "slidesToShow": 2 } },
-                              {"breakpoint":300, "settings": { "slidesToShow": 1 } }
-                             ]
-                        }'>
+                    "slidesToShow": 4,
+                    "slidesToScroll": 1,
+                    "arrows": true,
+                    "dots": false,
+                    "autoplay": false,
+                    "speed": 300,
+                    "infinite": true ,
+                    "responsive":[
+                    {"breakpoint":992, "settings": { "slidesToShow": 3 } },
+                    {"breakpoint":768, "settings": { "slidesToShow": 2 } },
+                    {"breakpoint":300, "settings": { "slidesToShow": 1 } }
+                    ]
+                    }'>
 
                         <article class="col single_product">
                             <figure>
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product1.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1872,30 +1856,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product2.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1928,8 +1912,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -1940,30 +1924,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product1.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -1990,8 +1974,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -2001,30 +1985,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product2.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -2057,8 +2041,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -2068,30 +2052,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product3.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -2124,8 +2108,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -2135,30 +2119,30 @@
                                 <div class="product_thumb">
                                     <a href="product-details.html">
                                         <img class="primary_img" src="assets/img/product/product4.jpg"
-                                             alt="consectetur">
+                                        alt="consectetur">
                                     </a>
                                     <div class="product_action">
                                         <ul>
                                             <li class="wishlist">
                                                 <a href="#" data-tippy="Wishlist"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-heart icons"></i>
                                                 </a>
                                             </li>
 
                                             <li class="quick_view">
                                                 <a data-toggle="modal" data-target="#modal_box"
-                                                   data-tippy="Quick View" href="#" data-tippy-inertia="true"
-                                                   data-tippy-delay="50" data-tippy-arrow="true"
-                                                   data-tippy-placement="left">
+                                                data-tippy="Quick View" href="#" data-tippy-inertia="true"
+                                                data-tippy-delay="50" data-tippy-arrow="true"
+                                                data-tippy-placement="left">
                                                     <i class="icon-size-fullscreen icons"></i>
                                                 </a>
                                             </li>
                                             <li class="compare">
                                                 <a data-tippy="Compare" href="#"
-                                                   data-tippy-inertia="true" data-tippy-delay="50"
-                                                   data-tippy-arrow="true" data-tippy-placement="left">
+                                                data-tippy-inertia="true" data-tippy-delay="50"
+                                                data-tippy-arrow="true" data-tippy-placement="left">
                                                     <i class="icon-refresh icons"></i>
                                                 </a>
                                             </li>
@@ -2187,8 +2171,8 @@
                                     </div>
                                     <div class="add_to_cart">
                                         <a class="btn btn-primary" href="#" data-tippy="Add To Cart"
-                                           data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
-                                           data-tippy-placement="top">Add To Cart</a>
+                                        data-tippy-inertia="true" data-tippy-delay="50" data-tippy-arrow="true"
+                                        data-tippy-placement="top">Add To Cart</a>
                                     </div>
                                 </figcaption>
                             </figure>
@@ -2204,32 +2188,30 @@
 <section class="banner_section banner_style2 mb-109">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <figure class="single_banner position-relative">
-                    <img src="assets/img/bg/bg3.jpg" alt="">
+           
+                @if(banners!=null)
+                {
+                    var banner_list2 = banners.Where(x => x.Position == "Banner2").OrderBy(z => z.Priority).ToList();
+                    @foreach (var item in banner_list2)
+                    {
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <figure class="single_banner position-relative">
+                            <img src="/images/banners/@item.ImageName" alt="">
                     <div class="banner_text position-absolute">
-                        <h3>Minimalist <br> sneaker</h3>
-                        <p>Stretch, fresh-cool help you alway <br> comfortable</p>
-                        <a class="btn btn-primary" href="shop.html">Shop Now</a>
+                        <h3>@item.Title</h3>
+                        <p>@item.Subtile</p>
+                        @if(!string.IsNullOrEmpty(item.Link))
+                            {
+                                <a class="btn btn-primary" href=@item.Link>Shop Now</a>
+                            }
                     </div>
-                    <div class="banner_tag">
-                        <span>new arrivals <br> women</span>
-                    </div>
+                   
                 </figure>
+                
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <figure class="single_banner position-relative">
-                    <img src="assets/img/bg/bg4.jpg" alt="">
-                    <div class="banner_text position-absolute text__style2">
-                        <h3><span>50%</span> OFF <br> for Autumn</h3>
-                        <p>Stretch, fresh-cool help you alway <br> comfortable</p>
-                        <a class="btn btn-primary" href="shop.html">Shop Now</a>
-                    </div>
-                    <div class="banner_tag">
-                        <span>mega sale</span>
-                    </div>
-                </figure>
-            </div>
+                }
+            }
+            
         </div>
     </div>
 </section>
