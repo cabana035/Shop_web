@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shop_web.Models.Db;
 
 namespace Shop_web.Controllers
@@ -14,6 +15,14 @@ namespace Shop_web.Controllers
         {
             var products = _context.Products.OrderByDescending(x => x.Id).ToList();
             return View(products);
+        }
+        public IActionResult SearchProducts(string SearchText)
+        {
+            var products = _context.Products.Where(x =>
+            EF.Functions.Like(x.Title, "%" + SearchText + "%") ||
+            EF.Functions.Like(x.Tags, "%" + SearchText + "%") )
+            .OrderBy(x=>x.Title).ToList();
+            return View("Index",products);
         }
     }
 }
