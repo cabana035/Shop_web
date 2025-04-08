@@ -25,6 +25,8 @@ public partial class OnlineShopContext : DbContext
 
     public virtual DbSet<ProductGalery> ProductGaleries { get; set; }
 
+    public virtual DbSet<User> Users { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("server=.;database=Onlineshop;trusted_connection=true;trustservercertificate=true");
@@ -83,6 +85,16 @@ public partial class OnlineShopContext : DbContext
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ProductGalery_Products");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.ToTable("User");
+
+            entity.Property(e => e.Email).HasMaxLength(50);
+            entity.Property(e => e.FullName).HasMaxLength(50);
+            entity.Property(e => e.Password).HasMaxLength(50);
+            entity.Property(e => e.RegisterDate).HasColumnType("datetime");
         });
 
         OnModelCreatingPartial(modelBuilder);

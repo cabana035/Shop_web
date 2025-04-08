@@ -1,2 +1,1 @@
-scaffold-dbcontext "server=.;database=Onlineshop;trusted_connection=true;trustservercertificate=true" 
-microsoft.entityframeworkcore.sqlserver -outputdir Models/Db -force
+scaffold-dbcontext "server=.;database=Onlineshop;trusted_connection=true;trustservercertificate=true" microsoft.entityframeworkcore.sqlserver -outputdir Models/Db -force
