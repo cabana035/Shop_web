@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Shop_web.Models.Db;
 using Shop_web.Models.ViewModels;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 
@@ -96,6 +97,74 @@ namespace Shop_web.Controllers
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");
+        }
+        public IActionResult RecoveryPassword()
+        {
+            
+            return View();
+        }
+        [HttpPost]
+        public IActionResult RecoveryPassword(RecoveryPasswordViewModel resetpassword)
+        {
+            if(!ModelState.IsValid) 
+                {
+                    return View();
+                }
+            Regex regex = new Regex((@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"));
+            Match match = regex.Match(resetpassword.Email);
+            if (!match.Success) 
+                {
+                ModelState.AddModelError("Email", "Emil is not vaid");
+                return View(resetpassword);
+                }
+            var fuser=_context.Users.FirstOrDefault(x=>x.Email==resetpassword.Email.Trim());
+            if (fuser==null) 
+                {
+                    ModelState.AddModelError("Email", "Email is not exist");
+                return View(resetpassword);
+                }
+            fuser.RecoveryCode=new Random().Next(10000,100000);
+            _context.Users.Update(fuser);
+            _context.SaveChanges();
+            MailMessage mail=new MailMessage();  
+            SmtpClient smtp=new SmtpClient("smtp.gmail.com");
+            mail.From = new MailAddress("cabana3500@gmail.com");
+            mail.To.Add(fuser.Email);
+            mail.Subject = "Recovery password";
+            mail.Body = "your recovery code:" + fuser.RecoveryCode;
+            smtp.Port = 587;
+            smtp.Credentials = new System.Net.NetworkCredential("cabana3500@gmail.com", "efqd bisv wuhq zczm");
+            smtp.EnableSsl = true;  
+            smtp.Send(mail);
+            return Redirect("/Account/RessetPassword?email=" + fuser.Email);
+
+
+        }
+        public IActionResult ResetPassword(string email)
+        {
+            var resetPasswordModel = new ResetPasswordViewModel();
+            resetPasswordModel.Email = email;
+            return View(resetPasswordModel);
+        }
+        [HttpPost]
+        public IActionResult ResetPassword(ResetPasswordViewModel resetPassword)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(resetPassword);
+            }
+            var fuser=_context.Users.FirstOrDefault(x=>x.Email==resetPassword.Email && x.RecoveryCode==resetPassword.RecoveryCode);
+            if (fuser==null) 
+                {
+                   ModelState.AddModelError("RecoveryCode", "Email or recovery code is not valid");
+                    return View(resetPassword);
+                }
+            fuser.Password=resetPassword.NewPassword;
+            _context.Users.Update(fuser);
+            _context.SaveChanges();
+
+            return RedirectToAction("Login");
+
         }
     }
 }
