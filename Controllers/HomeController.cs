@@ -20,6 +20,11 @@ namespace Shop_web.Controllers
         {
             var banner=_context.Banners.ToList();
             ViewData["banners"]=banner;
+            //-------------new products
+            var newProducts =_context.Products.OrderByDescending(x=>x.Id).Take(8).ToList();
+            ViewData["newProducts"]=newProducts;
+            ///----------best selling
+
             return View();
         }
 

@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.Options;
 using Microsoft.Extensions.Configuration.EnvironmentVariables;
 using Newtonsoft.Json;
 using NuGet.Configuration;
-using PayPal.Api;
+
 using Shop_web.Models.Db;
 using Shop_web.Models.ViewModels;
 using System.Linq;
@@ -16,14 +16,14 @@ namespace Shop_web.Controllers
     public class CartController : Controller
     {
         private OnlineShopContext _context;
-        private IHttpContextAccessor _httpContextAccessor;
-        IConfiguration _configuration;
-        public CartController(OnlineShopContext onlineShopContext, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+       // private IHttpContextAccessor _httpContextAccessor;
+        //IConfiguration _configuration;
+        public CartController(OnlineShopContext onlineShopContext)
         {
 
             _context = onlineShopContext;
-            _httpContextAccessor = httpContextAccessor;
-            _configuration = configuration;
+          //  _httpContextAccessor = httpContextAccessor;
+            //_configuration = configuration;
         }
         public IActionResult Index()
         {
@@ -155,7 +155,7 @@ namespace Shop_web.Controllers
             ViewData["Products"] = GetProductsinCart();
             return View("Checkout", order);
         }
-        /*
+        
         [Authorize]
         [HttpPost]
          public IActionResult Checkout(Order order)
@@ -214,6 +214,7 @@ namespace Shop_web.Controllers
               _context.SaveChanges();
               return Redirect("Cart/RedirectToPayPal?orderId=" + order.Id);
           }
+        /*
           public ActionResult RedirectToPayPal(int orderId)
           {
               var order = _context.Orders.Find(orderId);
